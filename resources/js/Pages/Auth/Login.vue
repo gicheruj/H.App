@@ -20,6 +20,7 @@ const form = useForm({
     email: '',
     password: '',
     remember: false,
+    role: '',
 });
 
 const submit = () => {

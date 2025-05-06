@@ -24,4 +24,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'role:nurse'])->get('/dashboard/nurse', function () {
+    return Inertia::render('Profile/Partials/NurseDashboard');
+})->name('nurse.dashboard');
+
+Route::middleware(['auth', 'role:doctor'])->get('/dashboard/doctor', function () {
+    return Inertia::render('Profile/Partials/DoctorDashboard');
+})->name('doctor.dashboard');
+
+Route::middleware(['auth', 'role:pharmacist'])->get('/dashboard/pharmacist', function () {
+    return Inertia::render('Profile/Partials/PharmacistDashboard');
+})->name('pharmacist.dashboard');
+
+
+
 require __DIR__.'/auth.php';
