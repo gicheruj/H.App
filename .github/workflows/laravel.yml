@@ -23,7 +23,7 @@ jobs:
           --health-retries=10
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -33,19 +33,12 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Set up environment
+      - name: Prepare Laravel Application
         run: |
           cp .env.example .env
           php artisan key:generate
-          php artisan config:clear
-          php artisan cache:clear
-          php artisan view:clear
-          php artisan route:clear
-
-      - name: Update .env database config
-        run: |
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
@@ -61,19 +54,9 @@ jobs:
             sleep 2
           done
 
-      - name: Clear Laravel caches (config/view/route/cache)
-        run: |
-          php artisan config:clear
-          php artisan cache:clear
-          php artisan view:clear
-          php artisan route:clear
-
       - name: Run Migrations
         run: php artisan migrate --force
 
-      - name: Delete PHPUnit result cache
-        run: |
-          if [ -f .phpunit.result.cache ]; then rm .phpunit.result.cache; fi
+      - name: Run Laravel Tests
+        run: php artisan test --retry=1
 
-      - name: Run Tests
-        run: php artisan test
