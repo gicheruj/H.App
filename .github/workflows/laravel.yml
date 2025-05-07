@@ -17,7 +17,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -pjooohny"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -53,11 +53,10 @@ jobs:
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=jooohny/' .env
 
-
       - name: Wait for MySQL
         run: |
           for i in {1..30}; do
-            mysqladmin ping -h 127.0.0.1 -u root -proot && break
+            mysqladmin ping -h 127.0.0.1 -u root -pjooohny && break
             echo "Waiting for MySQL..."
             sleep 2
           done
@@ -66,4 +65,5 @@ jobs:
         run: php artisan migrate --force
 
       - name: Run Tests
-        run: php artisan test
+        run: php artisan test --parallel
+
