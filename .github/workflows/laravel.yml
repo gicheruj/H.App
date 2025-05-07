@@ -10,6 +10,14 @@ jobs:
   laravel-tests:
     runs-on: ubuntu-latest
 
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: app
+      DB_USERNAME: root
+      DB_PASSWORD: jooohny
+
     services:
       mysql:
         image: mysql:5.7
@@ -39,13 +47,6 @@ jobs:
 
     - name: Copy .env
       run: cp .env.example .env
-
-    - name: Configure .env DB credentials
-      run: |
-        sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
-        sed -i 's/DB_DATABASE=.*/DB_DATABASE=app/' .env
-        sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
-        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=jooohny/' .env
 
     - name: Generate Key
       run: php artisan key:generate
