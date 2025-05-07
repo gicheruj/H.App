@@ -33,6 +33,11 @@ jobs:
         php-version: '8.2'
         extensions: mbstring, bcmath, mysql
         coverage: none
+
+    - name: Clear config cache
+      run: |
+        php artisan config:clear
+        php artisan cache:clear
     
     - name: Install Dependencies
       run: composer install --prefer-dist --no-progress
