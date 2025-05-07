@@ -3,8 +3,8 @@ name: Run Laravel Tests
 on:
   pull_request:
     branches: [ main ]
-  push:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
 
 jobs:
   laravel-tests:
