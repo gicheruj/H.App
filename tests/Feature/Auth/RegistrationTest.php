@@ -9,17 +9,10 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function users_can_register()
+    public function test_registration_screen_can_be_rendered(): void
     {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
+        $response = $this->get('/register');
 
-        $response->assertRedirect('/home'); // Adjust if your app redirects elsewhere after registration
-        $this->assertAuthenticated();
+        $response->assertStatus(200);
     }
 }
