@@ -9,7 +9,7 @@ on:
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
-    
+
     services:
       mysql:
         image: mysql:5.7
@@ -23,53 +23,58 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, bcmath, mysql
-        coverage: none
+      - uses: actions/checkout@v3
 
-    - name: Clear config cache
-      run: |
-        php artisan config:clear
-        php artisan cache:clear
-    
-    - name: Install Dependencies
-      run: composer install --prefer-dist --no-progress
-    
-    - name: Create .env file directly
-      run: |
-        cat > .env << 'EOL'
-        APP_NAME=Laravel
-        APP_ENV=testing
-        APP_KEY=
-        APP_DEBUG=true
-        APP_URL=http://localhost
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, mysql
+          coverage: none
 
-        LOG_CHANNEL=stack
-        LOG_LEVEL=debug
+      - name: Clear Laravel caches
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
 
-        DB_CONNECTION=mysql
-        DB_HOST=127.0.0.1
-        DB_PORT=3306
-        DB_DATABASE=app
-        DB_USERNAME=root
-        DB_PASSWORD=jooohny
-        EOL
-    
-    - name: Generate Key
-      run: php artisan key:generate
-    
-    - name: Display .env for debugging
-      run: cat .env
-    
-    - name: Run Migrations
-      run: php artisan migrate
-    
-    - name: Run Tests
-      run: php artisan test
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Create .env file
+        run: |
+          cat > .env << 'EOL'
+          APP_NAME=Laravel
+          APP_ENV=testing
+          APP_KEY=
+          APP_DEBUG=true
+          APP_URL=http://localhost
+
+          LOG_CHANNEL=stack
+          LOG_LEVEL=debug
+
+          DB_CONNECTION=mysql
+          DB_HOST=mysql
+          DB_PORT=3306
+          DB_DATABASE=app
+          DB_USERNAME=root
+          DB_PASSWORD=jooohny
+          EOL
+
+      - name: Generate Application Key
+        run: php artisan key:generate
+
+      - name: Rebuild Config Cache
+        run: php artisan config:clear && php artisan config:cache
+
+      - name: Display .env for Debugging
+        run: cat .env
+
+      - name: Run Migrations
+        run: php artisan migrate --force
+
+      - name: Run Tests
+        run: php artisan test
