@@ -71,5 +71,9 @@ jobs:
       - name: Run Migrations
         run: php artisan migrate --force
 
+      - name: Delete PHPUnit result cache
+        run: |
+          if [ -f .phpunit.result.cache ]; then rm .phpunit.result.cache; fi
+
       - name: Run Tests
         run: php artisan test
