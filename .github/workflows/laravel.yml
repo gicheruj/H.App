@@ -17,7 +17,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -pjooohny"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -34,9 +34,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
-
-      - name: Install ParaTest
-        run: composer require brianium/paratest:^7.0 --dev
 
       - name: Set up environment
         run: |
@@ -56,10 +53,11 @@ jobs:
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=jooohny/' .env
 
+
       - name: Wait for MySQL
         run: |
           for i in {1..30}; do
-            mysqladmin ping -h 127.0.0.1 -u root -pjooohny && break
+            mysqladmin ping -h 127.0.0.1 -u root -proot && break
             echo "Waiting for MySQL..."
             sleep 2
           done
@@ -68,4 +66,4 @@ jobs:
         run: php artisan migrate --force
 
       - name: Run Tests
-        run: php artisan test --parallel
+        run: php artisan test
