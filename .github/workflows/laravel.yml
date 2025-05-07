@@ -9,7 +9,7 @@ on:
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
-
+    
     services:
       mysql:
         image: mysql:5.7
@@ -23,35 +23,48 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-
+    
     steps:
     - uses: actions/checkout@v3
-
+    
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '8.2'
         extensions: mbstring, bcmath, mysql
         coverage: none
-
+    
     - name: Install Dependencies
       run: composer install --prefer-dist --no-progress
-
-    - name: Copy .env
-      run: cp .env.example .env
-
-    - name: Configure .env DB credentials
+    
+    - name: Create .env file directly
       run: |
-        sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
-        sed -i 's/DB_DATABASE=.*/DB_DATABASE=app/' .env
-        sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
-        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=jooohny/' .env
+        cat > .env << 'EOL'
+        APP_NAME=Laravel
+        APP_ENV=testing
+        APP_KEY=
+        APP_DEBUG=true
+        APP_URL=http://localhost
 
+        LOG_CHANNEL=stack
+        LOG_LEVEL=debug
+
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=app
+        DB_USERNAME=root
+        DB_PASSWORD=jooohny
+        EOL
+    
     - name: Generate Key
       run: php artisan key:generate
-
+    
+    - name: Display .env for debugging
+      run: cat .env
+    
     - name: Run Migrations
       run: php artisan migrate
-
+    
     - name: Run Tests
       run: php artisan test
