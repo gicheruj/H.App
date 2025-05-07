@@ -39,12 +39,16 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          # Update DB settings for GitHub Actions environment
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=app/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=jooohny/' .env
+          php artisan config:clear # Clear any cached config
+          php artisan route:clear  # Clear any cached routes
+          php artisan view:clear   # Clear any cached views
 
       - name: Wait for MySQL
         run: |
@@ -58,5 +62,11 @@ jobs:
         run: php artisan migrate --force
 
       - name: Run Laravel Tests
-        run: php artisan test --retry=1
+        run: php artisan test --retry=1 --verbose
+
+      - name: Show Environment Variables for Debugging
+        run: env
+
+      - name: Check MySQL Status
+        run: mysqladmin ping -h 127.0.0.1 -u root -pjooohny
 
