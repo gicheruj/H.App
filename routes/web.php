@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AppointmentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +38,16 @@ Route::middleware(['auth', 'role:pharmacist'])->get('/dashboard/pharmacist', fun
     return Inertia::render('Profile/Partials/PharmacistDashboard');
 })->name('pharmacist.dashboard');
 
+
+Route::middleware(['auth', 'role:nurse'])->group(function () {
+    Route::get('/dashboard/nurse/patients/create', [PatientController::class, 'create'])->name('patients.create');
+    Route::post('/dashboard/nurse/patients', [PatientController::class, 'store'])->name('patients.store');
+});
+
+Route::middleware(['auth', 'role:nurse'])->group(function () {
+    Route::get('/dashboard/nurse/appointment/create', [AppointmentController::class, 'create'])->name('appointment.create');
+    Route::post('/dashboard/nurse/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
+});
 
 
 require __DIR__.'/auth.php';
