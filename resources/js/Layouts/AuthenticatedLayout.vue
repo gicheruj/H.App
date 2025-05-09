@@ -50,6 +50,21 @@ const { user } = usePage().props.auth; // Accessing the authenticated user
                                     Schedule Appointment
                                 </NavLink>
                             </template>
+                            <template v-if="user.role === 'nurse'">
+                                <NavLink :href="route('patients.index')" :active="route().current('patients.index')">
+                                    View Patients
+                                </NavLink>
+                            </template>
+                            <template v-if="user.role === 'doctor'">
+                                <NavLink :href="route('diagnosis.create')" :active="route().current('diagnosis.create')">
+                                    Diagnosis
+                                </NavLink>
+                            </template>
+                            <template v-if="user.role === 'doctor'">
+                                <NavLink :href="route('appointments.index')" :active="route().current('appointments.index')">
+                                    View Appointments
+                                </NavLink>
+                            </template>
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">

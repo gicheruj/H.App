@@ -50,4 +50,13 @@ class AppointmentController extends Controller
 
         return redirect()->route('nurse.dashboard')->with('success', 'Patient created successfully.');
     }
+
+    public function index(): Response
+    {
+        $appointments = Appointment::where('doctor_id', auth()->id())->get();
+
+        return Inertia::render('Profile/Partials/AppointmentList', [
+            'appointments' => $appointments
+    ]);
+    }
 }

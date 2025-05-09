@@ -51,5 +51,15 @@ class PatientController extends Controller
 
         return redirect()->route('nurse.dashboard')->with('success', 'Patient created successfully.');
     }
+
+    public function index(): Response
+    {
+        $patients = Patient::all();
+
+        return Inertia::render('Profile/Partials/PatientList', [
+            'patients' => $patients
+    ]);
+    }
+
 }
 
