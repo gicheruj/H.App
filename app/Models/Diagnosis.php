@@ -17,6 +17,7 @@ class Diagnosis extends Model
         'appointment_id',
         'Patient_Name',
         'diagnosis',
+        'Prescribed_Medication',
         'notes',
     ];
 

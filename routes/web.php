@@ -60,10 +60,10 @@ Route::middleware(['auth', 'role:doctor'])->group(function () {
 
 Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/dashboard/doctor/patients/create/prescription', [PrescriptionController::class, 'create'])->name('prescription.create');
-    Route::post('/dashboard/doctor/patients', [PrescriptionController::class, 'store'])->name('prescription.store');
 });
 
 Route::middleware(['auth', 'role:pharmacist'])->group(function () {
     Route::get('/dashboard/pharmacist/prescriptions', [PrescriptionController::class, 'index'])->name('prescription.index');
+    Route::post('/dashboard/pharmacist/patients', [PrescriptionController::class, 'store'])->name('prescription.store');
 });
 require __DIR__.'/auth.php';

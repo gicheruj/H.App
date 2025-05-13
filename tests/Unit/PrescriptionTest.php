@@ -12,7 +12,6 @@ class PrescriptionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
     public function it_has_fillable_attributes()
     {
         $prescription = new Prescription();
