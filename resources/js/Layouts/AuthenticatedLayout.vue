@@ -9,7 +9,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
-const { user } = usePage().props.auth; // Accessing the authenticated user
+const { user } = usePage().props.auth;
 
 </script>
 
@@ -32,14 +32,29 @@ const { user } = usePage().props.auth; // Accessing the authenticated user
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
-                            </div>
+                            </div> -->
+                            <template v-if="user.role === 'nurse'">
+                                <NavLink :href="route('nurse.dashboard')" :active="route().current('nurse.dashboard')">
+                                    Dashboard
+                                </NavLink>
+                            </template>
+                            <template v-if="user.role === 'doctor'">
+                                <NavLink :href="route('doctor.dashboard')" :active="route().current('doctor.dashboard')">
+                                    Dashboard
+                                </NavLink>
+                            </template>
+                            <template v-if="user.role === 'pharmacist'">
+                                <NavLink :href="route('pharmacist.dashboard')" :active="route().current('pharmacist.dashboard')">
+                                    Dashboard
+                                </NavLink>
+                            </template>
                             <template v-if="user.role === 'nurse'">
                                 <NavLink :href="route('patients.create')" :active="route().current('patients.create')">
                                     Add New Patient
@@ -63,6 +78,16 @@ const { user } = usePage().props.auth; // Accessing the authenticated user
                             <template v-if="user.role === 'doctor'">
                                 <NavLink :href="route('appointments.index')" :active="route().current('appointments.index')">
                                     View Appointments
+                                </NavLink>
+                            </template>
+                            <template v-if="user.role === 'pharmacist'">
+                                <NavLink :href="route('prescription.create')" :active="route().current('prescription.create')">
+                                    Prescriptions
+                                </NavLink>
+                            </template>
+                            <template v-if="user.role === 'pharmacist'">
+                                <NavLink :href="route('prescription.index')" :active="route().current('prescription.index')">
+                                    View Prescriptions
                                 </NavLink>
                             </template>
                         </div>

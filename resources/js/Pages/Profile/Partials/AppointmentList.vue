@@ -1,4 +1,20 @@
+<script setup>
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+
+defineProps({
+  appointments: Array
+});
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleString();
+}
+</script>
+
 <template>
+  <AuthenticatedLayout>
+    <template>
     <div>
       <h1 class="text-2xl font-bold mb-4">Appointments</h1>
   
@@ -23,16 +39,9 @@
         </tbody>
       </table>
     </div>
-  </template>
+    </template>
+  </AuthenticatedLayout>
+</template>
   
-  <script setup>
-  defineProps({
-    appointments: Array
-  });
-  
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleString();
-  }
-  </script>
+
   

@@ -7,16 +7,16 @@ import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-    patient_id: '',
+    diagnosis_id: '',
     doctor_id: '',
-    appointment_id: '',
-    Patient_Name: '',
-    diagnosis: '',
-    notes: '',
+    medication_name: '',
+    dosage: '',
+    duration: '',
+    instructions: '',
 });
 
 const submitForm = () => {
-    form.post(route('diagnosis.store'));
+    form.post(route('prescription.store'));
 };
 </script>
 
@@ -25,26 +25,26 @@ const submitForm = () => {
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
-                Add New Diagnosis
+                Add New Prescription
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Fill in the details of the diagnosis.
+                Fill in the details of the prescription.
             </p>
         </header>
 
         <form @submit.prevent="submitForm" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="patient_id" value="Patient ID" />
+                <InputLabel for="diagnosis_id" value="Diagnosis ID" />
                 <TextInput
-                    id="patient_id"
+                    id="diagnosis_id"
                     type="number"
                     class="mt-1 block w-full"
-                    v-model="form.patient_id"
+                    v-model="form.diagnosis_id"
                     required
-                    aria-describedby="patient_id_error"
+                    aria-describedby="diagnosis_id_error"
                 />
-                <InputError id="patient_id_error" class="mt-2" :message="form.errors.patient_id" />
+                <InputError id="diagnosis_id_error" class="mt-2" :message="form.errors.diagnosis_id" />
             </div>
 
             <div>
@@ -61,71 +61,58 @@ const submitForm = () => {
             </div>
 
             <div>
-                <InputLabel for="appointment_id" value="Appointment ID" />
+                <InputLabel for="medication_name" value="Medication Name" />
                 <TextInput
-                    id="appointment_id"
-                    type="number"
+                    id="medication_name"
+                    type="text"
                     class="mt-1 block w-full"
-                    v-model="form.appointment_id"
+                    v-model="form.medication_name"
                     required
-                    aria-describedby="appointment_id_error"
+                    aria-describedby="medication_name_error"
                 />
-                <InputError id="appointment_id_error" class="mt-2" :message="form.errors.appointment_id" />
+                <InputError id="medication_name_error" class="mt-2" :message="form.errors.medication_name" />
             </div>
 
             <div>
-                <InputLabel for="Patient_Name" value="Patient Name" />
+                <InputLabel for="dosage" value="Dosage" />
                 <TextInput
-                    id="Patient_Name"
+                    id="dosage"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.Patient_Name"
+                    v-model="form.dosage"
                     required
-                    aria-describedby="Patient_Name_error"
+                    aria-describedby="dosage_error"
                 />
-                <InputError id="Patient_Name_error" class="mt-2" :message="form.errors.Patient_Name" />
+                <InputError id="dosage_error" class="mt-2" :message="form.errors.dosage" />
             </div>
 
             <div>
-                <InputLabel for="diagnosis" value="Diagnosis" />
+                <InputLabel for="duration" value="Duration" />
                 <TextInput
-                    id="diagnosis"
+                    id="duration"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.diagnosis"
+                    v-model="form.duration"
                     required
-                    aria-describedby="diagnosis_error"
+                    aria-describedby="duration_error"
                 />
-                <InputError id="diagnosis_error" class="mt-2" :message="form.errors.diagnosis" />
+                <InputError id="duration_error" class="mt-2" :message="form.errors.duration" />
             </div>
 
             <div>
-                <InputLabel for="Prescribed_medication" value="Prescribed Medication" />
+                <InputLabel for="instructions" value="Instructions (optional)" />
                 <TextInput
-                    id="prescribed_medication"
+                    id="instructions"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.prescribed_medication"
-                    required
-                    aria-describedby="prescribed_medication_error"
+                    v-model="form.instructions"
+                    aria-describedby="instructions_error"
                 />
-                <InputError id="prescribed_medication_error" class="mt-2" :message="form.errors.prescribed_medication" />
-            </div>
-
-            <div>
-                <InputLabel for="notes" value="Notes (optional)" />
-                <TextInput
-                    id="notes"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.notes"
-                    aria-describedby="notes_error"
-                />
-                <InputError id="notes_error" class="mt-2" :message="form.errors.notes" />
+                <InputError id="instructions_error" class="mt-2" :message="form.errors.instructions" />
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save Diagnosis</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">Save Prescription</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"

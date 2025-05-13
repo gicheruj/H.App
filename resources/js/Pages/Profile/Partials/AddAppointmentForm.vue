@@ -2,6 +2,7 @@
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 
@@ -19,6 +20,7 @@ const submitForm = () => {
 </script>
 
 <template>
+    <AuthenticatedLayout>
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
@@ -114,4 +116,5 @@ const submitForm = () => {
             </div>
         </form>
     </section>
+    </AuthenticatedLayout>
 </template>
