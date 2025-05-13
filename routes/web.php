@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\PrescriptionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,7 +49,21 @@ Route::middleware(['auth', 'role:nurse'])->group(function () {
 Route::middleware(['auth', 'role:nurse'])->group(function () {
     Route::get('/dashboard/nurse/appointment/create', [AppointmentController::class, 'create'])->name('appointment.create');
     Route::post('/dashboard/nurse/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
+    Route::get('/dashboard/nurse/patients', [PatientController::class, 'index'])->name('patients.index');
 });
 
+Route::middleware(['auth', 'role:doctor'])->group(function () {
+    Route::get('/dashboard/doctor/patients/create/diagnosis', [DiagnosisController::class, 'create'])->name('diagnosis.create');
+    Route::post('/dashboard/doctor/patients', [DiagnosisController::class, 'store'])->name('diagnosis.store');
+    Route::get('/dashboard/doctor/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+});
 
+Route::middleware(['auth', 'role:doctor'])->group(function () {
+    Route::get('/dashboard/doctor/patients/create/prescription', [PrescriptionController::class, 'create'])->name('prescription.create');
+    Route::post('/dashboard/doctor/patients', [PrescriptionController::class, 'store'])->name('prescription.store');
+});
+
+Route::middleware(['auth', 'role:pharmacist'])->group(function () {
+    Route::get('/dashboard/pharmacist/prescriptions', [PrescriptionController::class, 'index'])->name('prescription.index');
+});
 require __DIR__.'/auth.php';

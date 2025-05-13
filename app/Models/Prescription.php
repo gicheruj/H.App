@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Patient extends Model
+class Prescription extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'email',
-        'phone',
-        'age',
-        'gender',
-        'date_of_birth',
-        'address',
+        'diagnosis_id',
+        'doctor_id',
+        'medication_name',
+        'dosage',
+        'duration',
+        'instructions',
     ];
 }
 

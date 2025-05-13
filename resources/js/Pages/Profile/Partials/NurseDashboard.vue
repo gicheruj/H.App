@@ -1,6 +1,5 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-// import AddPatientForm from './AddPatientForm.vue';
 import { Head } from '@inertiajs/vue3';
 </script>
 
