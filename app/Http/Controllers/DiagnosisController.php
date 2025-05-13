@@ -32,6 +32,7 @@ class DiagnosisController extends Controller
             'appointment_id'  => 'required|exists:appointments,id',
             'Patient_Name'    => 'required|string|max:255',
             'diagnosis'       => 'required|string',
+            'Prescribed_Medication' => 'required|string',
             'notes'           => 'nullable|string',
         ]);
 
@@ -41,6 +42,7 @@ class DiagnosisController extends Controller
             'appointment_id' => $request->appointment_id,
             'Patient_Name'   => $request->Patient_Name,
             'diagnosis'      => $request->diagnosis,
+            'Prescribed_Medication' => $request->Prescribed_Medication,
             'notes'          => $request->notes,
         ]);
 

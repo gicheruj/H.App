@@ -13,7 +13,6 @@ class DiagnosisTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
     // public function it_has_patient_relationship()
     // {
     //     $patient = Patient::factory()->create();
@@ -49,7 +48,6 @@ class DiagnosisTest extends TestCase
     //     $this->assertEquals($appointment->id, $diagnosis->appointment->id);
     // }
 
-    /** @test */
     public function it_has_fillable_attributes()
     {
         $diagnosis = new Diagnosis();

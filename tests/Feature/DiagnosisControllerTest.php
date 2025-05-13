@@ -13,64 +13,67 @@ class DiagnosisControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    // public function it_stores_a_diagnosis_with_valid_data()
-    // {
-    //     // Manually create related models
-    //     $patient = Patient::create([
-    //         'name' => 'John Doe', // Add necessary attributes for Patient
-    //         'dob' => '1990-01-01',
-    //     ]);
+    /**
+     * Test that a doctor can create a diagnosis.
+     */
+    public function test_doctor_can_create_diagnosis()
+    {
+        // Create a patient
+        $patient = Patient::create([
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+            'email' => 'jane@example.com',
+            'phone' => '1234567890',
+            'age' => 30,
+            'gender' => 'female',
+            'date_of_birth' => '1995-01-01',
+            'address' => '123 Main St',
+        ]);
 
-    //     $doctor = User::create([
-    //         'name' => 'Dr. Smith',
-    //         'email' => 'doctor@example.com',
-    //         'password' => bcrypt('password'),
-    //     ]);
+        // Create a doctor
+        $doctor = User::create([
+            'name'     => 'Dr. Smith',
+            'email'    => 'doctor@example.com',
+            'password' => bcrypt('password'),
+            'role' => 'doctor',
+        ]);
 
-    //     $appointment = Appointment::create([
-    //         'patient_id' => $patient->id,
-    //         'doctor_id' => $doctor->id,
-    //         'date' => now(),
-    //     ]);
+        // Create an appointment for the doctor and patient
+        $appointment = Appointment::create([
+            'patient_id'       => $patient->id,
+            'doctor_id'        => $doctor->id,
+            'appointment_date' => '2025-05-15 14:00:00',
+            'status'           => 'pending',
+            'notes'            => 'Routine checkup',
+        ]);
 
-    //     // Create a diagnosis using valid data
-    //     $response = $this->post(route('diagnoses.store'), [
-    //         'patient_id'     => $patient->id,
-    //         'doctor_id'      => $doctor->id,
-    //         'appointment_id' => $appointment->id,
-    //         'Patient_Name'   => 'John Doe',
-    //         'diagnosis'      => 'Flu',
-    //         'notes'          => 'Bed rest recommended.',
-    //     ]);
+        // Authenticate as the doctor
+        $response = $this->actingAs($doctor)->post('/dashboard/doctor/patients', [
+            'patient_id'     => $patient->id,
+            'doctor_id'      => $doctor->id,
+            'appointment_id' => $appointment->id,
+            'Patient_Name'   => 'John Doe',
+            'diagnosis'      => 'Flu',
+            'Prescribed_Medication' => 'Antibiotic',
+            'notes'          => 'Bed rest recommended.',
+        ]);
+        
 
-    //     $response->assertRedirect(route('doctor.dashboard'));
-    //     $this->assertDatabaseHas('diagnoses', [
-    //         'patient_id'   => $patient->id,
-    //         'doctor_id'    => $doctor->id,
-    //         'Patient_Name' => 'John Doe',
-    //     ]);
-    // }
+        // Assert that the response redirects to the doctor's dashboard
+        // $response->assertRedirect(route('doctor.dashboard'));
 
-    // /** @test */
-    // public function it_displays_the_diagnosis_list()
-    // {
-    //     // Manually create diagnoses
-    //     Diagnosis::create([
-    //         'patient_id' => 1,
-    //         'doctor_id'  => 1,
-    //         'diagnosis'  => 'Flu',
-    //         'notes'      => 'Bed rest recommended.',
-    //     ]);
-
-    //     $response = $this->get(route('diagnoses.index'));
-
-    //     $response->assertStatus(200);
-    //     $response->assertInertia(fn ($page) =>
-    //         $page->component('Profile/Partials/DiagnosesList')
-    //             ->has('diagnoses', 1)
-    //     );
-    // }
+        // Assert that the diagnosis was correctly stored in the database
+        $this->assertDatabaseHas('diagnoses', [
+            'patient_id'     => $patient->id,
+            'doctor_id'      => $doctor->id,
+            'appointment_id' => $appointment->id,
+            'Patient_Name'   => 'John Doe',
+            'diagnosis'      => 'Flu',
+            'Prescribed_Medication' => 'Antibiotic',
+            'notes'          => 'Bed rest recommended.',
+        ]);
+    }
 }
+
 
 
