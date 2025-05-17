@@ -44,7 +44,7 @@ class PrescriptionController extends Controller
             'instructions'    => $request->instructions,
         ]);
 
-        return redirect()->route('doctor.dashboard')->with('success', 'Prescription created successfully.');
+        return redirect()->route('pharmacist.dashboard')->with('success', 'Prescription created successfully.');
     }
 
     public function index(): Response

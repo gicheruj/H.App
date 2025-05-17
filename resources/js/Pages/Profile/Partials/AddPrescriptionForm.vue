@@ -22,110 +22,116 @@ const submitForm = () => {
 
 <template>
     <AuthenticatedLayout>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">
-                Add New Prescription
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Fill in the details of the prescription.
-            </p>
+      <section class="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md mt-10">
+        <header class="mb-8">
+          <h2 class="text-2xl font-bold text-gray-800">💊 Add New Prescription</h2>
+          <p class="text-sm text-gray-500 mt-1">Fill in the details of the prescription below.</p>
         </header>
-
-        <form @submit.prevent="submitForm" class="mt-6 space-y-6">
+  
+        <form @submit.prevent="submitForm" class="space-y-6">
+          <!-- Diagnosis & Doctor ID -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <InputLabel for="diagnosis_id" value="Diagnosis ID" />
-                <TextInput
-                    id="diagnosis_id"
-                    type="number"
-                    class="mt-1 block w-full"
-                    v-model="form.diagnosis_id"
-                    required
-                    aria-describedby="diagnosis_id_error"
-                />
-                <InputError id="diagnosis_id_error" class="mt-2" :message="form.errors.diagnosis_id" />
+              <InputLabel for="diagnosis_id" value="Diagnosis ID" />
+              <TextInput
+                id="diagnosis_id"
+                type="number"
+                class="mt-1 block w-full"
+                v-model="form.diagnosis_id"
+                required
+                aria-describedby="diagnosis_id_error"
+              />
+              <InputError id="diagnosis_id_error" class="mt-2" :message="form.errors.diagnosis_id" />
             </div>
-
+  
             <div>
-                <InputLabel for="doctor_id" value="Doctor ID" />
-                <TextInput
-                    id="doctor_id"
-                    type="number"
-                    class="mt-1 block w-full"
-                    v-model="form.doctor_id"
-                    required
-                    aria-describedby="doctor_id_error"
-                />
-                <InputError id="doctor_id_error" class="mt-2" :message="form.errors.doctor_id" />
+              <InputLabel for="doctor_id" value="Doctor ID" />
+              <TextInput
+                id="doctor_id"
+                type="number"
+                class="mt-1 block w-full"
+                v-model="form.doctor_id"
+                required
+                aria-describedby="doctor_id_error"
+              />
+              <InputError id="doctor_id_error" class="mt-2" :message="form.errors.doctor_id" />
             </div>
-
+          </div>
+  
+          <!-- Medication & Dosage -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <InputLabel for="medication_name" value="Medication Name" />
-                <TextInput
-                    id="medication_name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.medication_name"
-                    required
-                    aria-describedby="medication_name_error"
-                />
-                <InputError id="medication_name_error" class="mt-2" :message="form.errors.medication_name" />
+              <InputLabel for="medication_name" value="Medication Name" />
+              <TextInput
+                id="medication_name"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="form.medication_name"
+                required
+                aria-describedby="medication_name_error"
+              />
+              <InputError id="medication_name_error" class="mt-2" :message="form.errors.medication_name" />
             </div>
-
+  
             <div>
-                <InputLabel for="dosage" value="Dosage" />
-                <TextInput
-                    id="dosage"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.dosage"
-                    required
-                    aria-describedby="dosage_error"
-                />
-                <InputError id="dosage_error" class="mt-2" :message="form.errors.dosage" />
+              <InputLabel for="dosage" value="Dosage" />
+              <TextInput
+                id="dosage"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="form.dosage"
+                required
+                aria-describedby="dosage_error"
+              />
+              <InputError id="dosage_error" class="mt-2" :message="form.errors.dosage" />
             </div>
-
+          </div>
+  
+          <!-- Duration & Instructions -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <InputLabel for="duration" value="Duration" />
-                <TextInput
-                    id="duration"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.duration"
-                    required
-                    aria-describedby="duration_error"
-                />
-                <InputError id="duration_error" class="mt-2" :message="form.errors.duration" />
+              <InputLabel for="duration" value="Duration" />
+              <TextInput
+                id="duration"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="form.duration"
+                required
+                aria-describedby="duration_error"
+              />
+              <InputError id="duration_error" class="mt-2" :message="form.errors.duration" />
             </div>
-
+  
             <div>
-                <InputLabel for="instructions" value="Instructions (optional)" />
-                <TextInput
-                    id="instructions"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.instructions"
-                    aria-describedby="instructions_error"
-                />
-                <InputError id="instructions_error" class="mt-2" :message="form.errors.instructions" />
+              <InputLabel for="instructions" value="Instructions (optional)" />
+              <TextInput
+                id="instructions"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="form.instructions"
+                aria-describedby="instructions_error"
+              />
+              <InputError id="instructions_error" class="mt-2" :message="form.errors.instructions" />
             </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save Prescription</PrimaryButton>
-
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-                        Saved.
-                    </p>
-                </Transition>
-            </div>
+          </div>
+  
+          <!-- Submit Button -->
+          <div class="flex items-center gap-4 pt-4">
+            <PrimaryButton :disabled="form.processing">💾 Save Prescription</PrimaryButton>
+  
+            <Transition
+              enter-active-class="transition ease-in-out duration-300"
+              enter-from-class="opacity-0"
+              leave-active-class="transition ease-in-out duration-300"
+              leave-to-class="opacity-0"
+            >
+              <p v-if="form.recentlySuccessful" class="text-sm text-green-600 font-medium">
+                ✅ Prescription saved successfully.
+              </p>
+            </Transition>
+          </div>
         </form>
-    </section>
-</AuthenticatedLayout>
-</template>
+      </section>
+    </AuthenticatedLayout>
+  </template>
+  

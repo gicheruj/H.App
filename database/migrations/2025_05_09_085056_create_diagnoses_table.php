@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('doctor_id');
             $table->unsignedBigInteger('appointment_id');
-            $table->string('Patient_Name');
+            $table->string('patient_name');
             $table->text('diagnosis');
-            $table->text('Prescribed_Medication');
+            $table->string('prescribed_medication');
             $table->text('notes')->nullable();
             $table->timestamps();
     
