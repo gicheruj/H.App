@@ -48,13 +48,13 @@ class DiagnosisControllerTest extends TestCase
         ]);
 
         // Authenticate as the doctor
-        $response = $this->actingAs($doctor)->post('/dashboard/doctor/patients', [
+        $response = $this->actingAs($doctor)->post('/dashboard/doctor/diagnosis', [
             'patient_id'     => $patient->id,
             'doctor_id'      => $doctor->id,
             'appointment_id' => $appointment->id,
-            'Patient_Name'   => 'John Doe',
+            'patient_name'   => 'John Doe',
             'diagnosis'      => 'Flu',
-            'Prescribed_Medication' => 'Antibiotic',
+            'prescribed_medication' => 'Antibiotic',
             'notes'          => 'Bed rest recommended.',
         ]);
         
@@ -67,11 +67,66 @@ class DiagnosisControllerTest extends TestCase
             'patient_id'     => $patient->id,
             'doctor_id'      => $doctor->id,
             'appointment_id' => $appointment->id,
-            'Patient_Name'   => 'John Doe',
+            'patient_name'   => 'John Doe',
             'diagnosis'      => 'Flu',
-            'Prescribed_Medication' => 'Antibiotic',
+            'prescribed_medication' => 'Antibiotic',
             'notes'          => 'Bed rest recommended.',
         ]);
+    }
+
+    public function test_pharmacist_can_view_diagnosis_list()
+    {
+        $doctor = User::create([
+            'name'     => 'Dr. Adams',
+            'email'    => 'adams@example.com',
+            'password' => bcrypt('password'),
+            'role'     => 'doctor',
+        ]);
+
+        $pharmacist = User::create([
+            'name'     => 'Pharmacist Joy',
+            'email'    => 'pharma@example.com',
+            'password' => bcrypt('password'),
+            'role'     => 'pharmacist',
+        ]);
+
+        $patient = Patient::create([
+            'first_name'    => 'Alice',
+            'last_name'     => 'Smith',
+            'email'         => 'alice@example.com',
+            'phone'         => '0987654321',
+            'age'           => 28,
+            'gender'        => 'female',
+            'date_of_birth' => '1997-03-15',
+            'address'       => '456 Health Ave',
+        ]);
+
+        $appointment = Appointment::create([
+            'patient_id'       => $patient->id,
+            'doctor_id'        => $doctor->id,
+            'appointment_date' => '2025-05-16 10:00:00',
+            'status'           => 'completed',
+            'notes'            => 'Follow-up visit',
+        ]);
+
+        Diagnosis::create([
+            'patient_id'            => $patient->id,
+            'doctor_id'             => $doctor->id,
+            'appointment_id'        => $appointment->id,
+            'patient_name'          => 'Alice Smith',
+            'diagnosis'             => 'Malaria',
+            'prescribed_medication' => 'ACTs',
+            'notes'                 => 'Take after meals',
+        ]);
+
+        $response = $this->actingAs($pharmacist)->get('/dashboard/pharmacist/diagnosis');
+
+        $response->assertStatus(200);
+        $response->assertInertia(fn ($page) =>
+            $page->component('Profile/Partials/DiagnosisList')
+                 ->has('diagnoses', 1)
+                 ->where('diagnoses.0.diagnosis', 'Malaria')
+        );
     }
 }
 

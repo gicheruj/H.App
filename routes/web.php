@@ -53,17 +53,15 @@ Route::middleware(['auth', 'role:nurse'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:doctor'])->group(function () {
-    Route::get('/dashboard/doctor/patients/create/diagnosis', [DiagnosisController::class, 'create'])->name('diagnosis.create');
-    Route::post('/dashboard/doctor/patients', [DiagnosisController::class, 'store'])->name('diagnosis.store');
+    Route::get('/dashboard/doctor/diagnosis/create', [DiagnosisController::class, 'create'])->name('diagnosis.create');
+    Route::post('/dashboard/doctor/diagnosis', [DiagnosisController::class, 'store'])->name('diagnosis.store');
     Route::get('/dashboard/doctor/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
-});
-
-Route::middleware(['auth', 'role:doctor'])->group(function () {
-    Route::get('/dashboard/doctor/patients/create/prescription', [PrescriptionController::class, 'create'])->name('prescription.create');
+    Route::patch('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointment.update');
 });
 
 Route::middleware(['auth', 'role:pharmacist'])->group(function () {
-    Route::get('/dashboard/pharmacist/prescriptions', [PrescriptionController::class, 'index'])->name('prescription.index');
+    Route::get('/dashboard/pharmacist/prescription/create', [PrescriptionController::class, 'create'])->name('prescription.create');
     Route::post('/dashboard/pharmacist/patients', [PrescriptionController::class, 'store'])->name('prescription.store');
+    Route::get('/dashboard/pharmacist/diagnosis', [DiagnosisController::class, 'index'])->name('diagnosis.index');
 });
 require __DIR__.'/auth.php';

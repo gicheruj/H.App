@@ -15,25 +15,25 @@ class Diagnosis extends Model
         'patient_id',
         'doctor_id',
         'appointment_id',
-        'Patient_Name',
+        'patient_name',
         'diagnosis',
-        'Prescribed_Medication',
+        'prescribed_medication',
         'notes',
     ];
 
     // Relationships
-    public function patient()
-    {
-        return $this->belongsTo(Patient::class);
-    }
+    // public function patient()
+    // {
+    //     return $this->belongsTo(Patient::class);
+    // }
 
-    public function doctor()
-    {
-        return $this->belongsTo(User::class, 'doctor_id');
-    }
+    // public function doctor()
+    // {
+    //     return $this->belongsTo(User::class, 'doctor_id');
+    // }
 
-    public function appointment()
-    {
-        return $this->belongsTo(Appointment::class);
-    }
+    // public function appointment()
+    // {
+    //     return $this->belongsTo(Appointment::class);
+    // }
 }

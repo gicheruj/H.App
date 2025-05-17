@@ -30,9 +30,9 @@ class DiagnosisController extends Controller
             'patient_id'      => 'required|exists:patients,id',
             'doctor_id'       => 'required|exists:users,id',
             'appointment_id'  => 'required|exists:appointments,id',
-            'Patient_Name'    => 'required|string|max:255',
+            'patient_name'    => 'required|string|max:255',
             'diagnosis'       => 'required|string',
-            'Prescribed_Medication' => 'required|string',
+            'prescribed_medication' => 'required|string',
             'notes'           => 'nullable|string',
         ]);
 
@@ -40,13 +40,22 @@ class DiagnosisController extends Controller
             'patient_id'     => $request->patient_id,
             'doctor_id'      => $request->doctor_id,
             'appointment_id' => $request->appointment_id,
-            'Patient_Name'   => $request->Patient_Name,
+            'patient_name'   => $request->patient_name,
             'diagnosis'      => $request->diagnosis,
-            'Prescribed_Medication' => $request->Prescribed_Medication,
+            'prescribed_medication' => $request->prescribed_medication,
             'notes'          => $request->notes,
         ]);
 
         return redirect()->route('doctor.dashboard')->with('success', 'Diagnosis created successfully.');
+    }
+
+    public function index(): Response
+    {
+        $diagnoses = Diagnosis::all();
+
+        return Inertia::render('Profile/Partials/DiagnosisList', [
+            'diagnoses' => $diagnoses
+    ]);
     }
 
 }

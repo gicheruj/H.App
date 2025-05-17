@@ -59,4 +59,20 @@ class AppointmentController extends Controller
             'appointments' => $appointments
     ]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        $validated = $request->validate([
+            'appointment_date' => 'required|date',
+            'status' => 'required|string|in:pending,completed,cancelled',
+            'notes' => 'nullable|string'
+        ]);
+
+        $appointment->update($validated);
+
+        return back()->with('success', 'Appointment updated.');
+    }
+
 }
