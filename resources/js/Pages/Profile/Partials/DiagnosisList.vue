@@ -37,9 +37,9 @@ defineProps({
             <td class="py-2 px-4 border">{{ diagnosis.patient_id }}</td>
             <td class="py-2 px-4 border">{{ diagnosis.doctor_id }}</td>
             <td class="py-2 px-4 border">{{ diagnosis.appointment_id }}</td>
-            <td class="py-2 px-4 border">{{ diagnosis.Patient_Name }}</td>
+            <td class="py-2 px-4 border">{{ diagnosis.patient_name }}</td>
             <td class="py-2 px-4 border">{{ diagnosis.diagnosis }}</td>
-            <td class="py-2 px-4 border">{{ diagnosis.Prescribed_Medication }}</td>
+            <td class="py-2 px-4 border">{{ diagnosis.prescribed_medication }}</td>
             <td class="py-2 px-4 border">{{ diagnosis.notes || '—' }}</td>
           </tr>
         </tbody>
