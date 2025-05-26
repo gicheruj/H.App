@@ -4,7 +4,8 @@ FROM composer:2 AS vendor
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction
+COPY .env .env  
+RUN composer install --no-dev --prefer-dist --no-interaction --no-scripts
 
 COPY . .
 
@@ -48,9 +49,14 @@ ENV APP_ENV=production \
     APP_KEY=base64:dummykey1234567890= \
     PORT=8000
 
+# Run Laravel boot and optimization scripts
+RUN php artisan package:discover --ansi \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
 # Expose port
 EXPOSE 8000
 
 # Entrypoint for Laravel
 CMD php artisan serve --host=0.0.0.0 --port=8000
-
