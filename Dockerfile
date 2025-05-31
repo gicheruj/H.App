@@ -37,9 +37,6 @@ WORKDIR /var/www
 
 COPY --from=assets /var/www /var/www
 
-# Copy the .env file explicitly
-COPY .env .env
-
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
@@ -56,4 +53,5 @@ RUN php artisan package:discover --ansi \
 EXPOSE 8000
 
 CMD php artisan serve --host=0.0.0.0 --port=8000
+
 
