@@ -1,7 +1,7 @@
 # Stage 1: Install PHP dependencies
 FROM composer:2 AS vendor
 
-WORKDIR /app
+WORKDIR /H.App
 
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --prefer-dist --no-interaction --no-scripts
@@ -11,7 +11,7 @@ COPY . .
 # Stage 2: Build frontend assets
 FROM node:18 AS assets
 
-WORKDIR /app
+WORKDIR /H.App
 
 # Copy entire Laravel app including resources/ and vite.config.js
 COPY . .
@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Set working directory
-WORKDIR /app
+WORKDIR /H.App
 
 # Copy everything from previous stage
 COPY --from=assets /app /app
