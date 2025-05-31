@@ -15,7 +15,12 @@ WORKDIR /app
 
 COPY --from=vendor /app /app
 
-RUN npm install && npm run build
+# Install node modules at root (package.json location)
+RUN npm install
+
+# Build frontend assets inside resources/js folder
+WORKDIR /app/resources/js
+RUN npm run build
 
 # Stage 3: Laravel PHP application
 FROM php:8.2-cli
@@ -42,20 +47,20 @@ COPY --from=assets /app /app
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 
-# Set Laravel environment
+# Set Laravel environment variables (override with real ones on Render)
 ENV APP_ENV=production \
     APP_DEBUG=false \
     APP_KEY=base64:dummykey1234567890= \
     PORT=8000
 
-# Run Laravel boot and optimization scripts
+# Run Laravel optimization commands
 RUN php artisan package:discover --ansi \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
 
-# Expose port
+# Expose port 8000
 EXPOSE 8000
 
-# Entrypoint for Laravel
+# Run Laravel server
 CMD php artisan serve --host=0.0.0.0 --port=8000
