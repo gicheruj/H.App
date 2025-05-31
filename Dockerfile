@@ -4,7 +4,6 @@ FROM composer:2 AS vendor
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-COPY .env .env  
 RUN composer install --no-dev --prefer-dist --no-interaction --no-scripts
 
 COPY . .
