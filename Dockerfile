@@ -13,8 +13,8 @@ FROM node:18 AS assets
 
 WORKDIR /app
 
-# Copy entire app, including package.json
-COPY --from=vendor /app /app
+# Copy entire Laravel app including resources/ and vite.config.js
+COPY . .
 
 # Install node modules and build assets
 RUN npm install && npm run build
@@ -34,26 +34,29 @@ RUN apt-get update && apt-get install -y \
     curl \
     && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
+# Set working directory
 WORKDIR /app
 
-# Copy built app from assets stage
+# Copy everything from previous stage
 COPY --from=assets /app /app
 
 # Install Composer globally
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
 
-# Laravel environment variables
+# Laravel environment
 ENV APP_ENV=production \
     APP_DEBUG=false \
-    APP_KEY=base64:dummykey1234567890= \
     PORT=8000
 
-# Optimize Laravel
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+# Laravel optimization
+RUN php artisan config:clear && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
+# Expose port
 EXPOSE 8000
 
+# Start Laravel app
 CMD php artisan serve --host=0.0.0.0 --port=8000
+
