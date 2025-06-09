@@ -9,15 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql:5.7
+      postgres:
+        image: postgres:14
         env:
-          MYSQL_ROOT_PASSWORD: jooohny
-          MYSQL_DATABASE: app
+          POSTGRES_DB: app
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: jooohny
         ports:
-          - 3306:3306
+          - 5432:5432
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -pjooohny"
+          --health-cmd="pg_isready -U root"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
@@ -29,28 +30,28 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, bcmath, pdo_mysql
+          extensions: mbstring, bcmath, pdo_pgsql
           coverage: none
 
-      - name: Install dependencies
+      - name: Install Composer Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Prepare Laravel Application
+      - name: Prepare Laravel Environment
         run: |
           cp .env.example .env
           php artisan key:generate
-          sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+          sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=pgsql/' .env
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
-          sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
+          sed -i 's/DB_PORT=.*/DB_PORT=5432/' .env
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=app/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=jooohny/' .env
 
-      - name: Wait for MySQL
+      - name: Wait for PostgreSQL
         run: |
           for i in {1..30}; do
-            mysqladmin ping -h 127.0.0.1 -u root -pjooohny && break
-            echo "Waiting for MySQL..."
+            pg_isready -h 127.0.0.1 -p 5432 -U root && break
+            echo "Waiting for PostgreSQL..."
             sleep 2
           done
 
@@ -58,6 +59,4 @@ jobs:
         run: php artisan migrate --force
 
       - name: Run Laravel Tests
-        run: |
-          php artisan test || true
-
+        run: php artisan test
