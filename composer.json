@@ -56,7 +56,10 @@
             "@php artisan migrate --graceful --ansi"
         ],
         "post-install-cmd": [
-            "@php artisan migrate --force"
+            "@php artisan migrate --force",
+            "@php artisan config:clear --quiet",
+            "@php artisan cache:clear --quiet",
+            "@php artisan view:clear --quiet"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
