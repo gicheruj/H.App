@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: imariqa
-    env: php
-    buildCommand: composer install --no-dev --optimize-autoloader && php artisan config:clear && php artisan cache:clear
-    startCommand: php -S 0.0.0.0:$PORT -t public/
